@@ -1,0 +1,12 @@
+FROM nvcr.io/nvidia/pytorch:22.12-py3
+RUN apt-get update  && apt-get install -y git python3-virtualenv wget
+
+WORKDIR /workspace
+
+RUN pip install --upgrade --force-reinstall torchtext torchvision scipy numba \
+    && pip install --pre --force-reinstall torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 \
+    && git clone https://github.com/zhuwenxi/llm_finetuning.git
+
+WORKDIR llm_finetuning
+RUN pip install -r requirements.txt \
+    && pip install -r cuda_quant_requirements.txt
